@@ -1,0 +1,54 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >
+  CloudFormation template to create CloudTrail trail for an account.
+  A centralized bucket and topic are created in a separate template.
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups: 
+      - 
+        Label: 
+          default: "CloudTrail Resource Configuration"
+        Parameters: 
+          - BucketName
+          - TopicARN
+    ParameterLabels: 
+      BucketName: 
+        default: "S3 Bucket Name"
+      TopicARN: 
+        default: "SNS Topic ARN"
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: Enter the name of the S3 bucket
+    AllowedPattern: ^[-A-Za-z0-9]+$
+  TopicARN:
+    Type: String
+    Description: Enter the ARN of the SNS topic, i.e. arn:aws:sns:<REGION>:<ACCOUNT_NUMBER>:<SNS_TOPIC>
+    Default: arn:aws:sns:
+    AllowedPattern: ^arn:aws:sns:[-a-z0-9]+:[0-9]{12}:[:-A-Za-z0-9]+$
+
+Resources:
+  Trail:
+    Type: "AWS::CloudTrail::Trail"
+    Properties:
+#      CloudWatchLogsLogGroupArn: String
+#      CloudWatchLogsRoleArn: String
+#      EnableLogFileValidation: true
+      IncludeGlobalServiceEvents: true
+      IsLogging: true
+      IsMultiRegionTrail: true
+#      KMSKeyId: String
+      S3BucketName: !Ref BucketName
+#      S3KeyPrefix: String
+      SnsTopicName: !Ref TopicARN
+#      Tags:
+#        - Resource Tag  Bucket:
+
+Outputs:
+  TrailName:
+    Description: The name of the CloudTrail trail
+    Value: !Ref Trail
