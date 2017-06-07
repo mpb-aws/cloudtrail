@@ -28,7 +28,6 @@ Parameters:
   TopicARN:
     Type: String
     Description: Enter the ARN of the SNS topic, i.e. arn:aws:sns:<REGION>:<ACCOUNT_NUMBER>:<SNS_TOPIC>
-    Default: arn:aws:sns:
     AllowedPattern: ^arn:aws:sns:[-a-z0-9]+:[0-9]{12}:[:-A-Za-z0-9]+$
 
 Resources:
